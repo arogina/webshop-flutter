@@ -1,2 +1,2 @@
-# webshop-flutter
+# WebShop - Flutter
 WebShop Application for Android and iOS
