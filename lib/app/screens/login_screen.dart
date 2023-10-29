@@ -35,6 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 content: Text("Successful login!"),
               ));
             }
+
+            _formKey.currentState!.reset();
+            _setFocus();
           } else {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

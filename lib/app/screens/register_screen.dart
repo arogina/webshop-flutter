@@ -45,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
 
           _formKey.currentState!.reset();
-          _userNameFocus.requestFocus();
+          _setFocus();
         } on Exception catch (ex) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
