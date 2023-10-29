@@ -25,7 +25,7 @@ class _NamedTextFieldState extends State<NamedTextField> {
     return Row(
       children: [
         SizedBox(
-          width: 100,
+          width: widget.text == "" ? null : 100,
           child: Text(widget.text),
         ),
         Expanded(

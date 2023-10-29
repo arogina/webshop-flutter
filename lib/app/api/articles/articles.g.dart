@@ -7,10 +7,10 @@ part of 'articles.dart';
 // **************************************************************************
 
 Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
-      price: (json['price'] as num).toDouble(),
+      price: json['price'] as String,
       image: json['image'] as String,
     );
 
@@ -44,6 +44,35 @@ class _ArticlesApi implements ArticlesApi {
   Future<List<Article>> getArticles() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Article>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/articles',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => Article.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<Article>> getArticlesSearch(String search) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'search': search};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =

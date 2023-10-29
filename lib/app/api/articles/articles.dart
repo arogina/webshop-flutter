@@ -12,6 +12,9 @@ abstract class ArticlesApi {
   @GET("/articles")
   Future<List<Article>> getArticles();
 
+  @GET("/articles")
+  Future<List<Article>> getArticlesSearch(@Query("search") String search);
+
   @GET("/articles/{id}")
   Future<Article> getArticle(@Path() String id);
 
@@ -27,10 +30,10 @@ abstract class ArticlesApi {
 
 @JsonSerializable()
 class Article {
-  final int id;
+  final String id;
   final String name;
   final String description;
-  final double price;
+  final String price;
   final String image;
 
   const Article({
