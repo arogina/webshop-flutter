@@ -70,13 +70,13 @@ class _UsersApi implements UsersApi {
   }
 
   @override
-  Future<User> getUser(String id) async {
+  Future<User?> getUser(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<User>(Options(
+        await _dio.fetch<Map<String, dynamic>?>(_setStreamType<User>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -92,7 +92,36 @@ class _UsersApi implements UsersApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = User.fromJson(_result.data!);
+    final value = _result.data == null ? null : User.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<User>?> getUserByUsername(String username) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'username': username};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<User>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data
+        ?.map((dynamic i) => User.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

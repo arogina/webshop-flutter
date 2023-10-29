@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:webshop_flutter/app/screens/register_screen.dart';
+import 'package:webshop_flutter/app/screens/login_screen.dart';
+//import 'package:webshop_flutter/app/screens/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,14 +9,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WebShop',
       theme: ThemeData.dark(),
-      home: const RegisterScreen(),
+      home: const LoginScreen(),
     );
   }
 }
