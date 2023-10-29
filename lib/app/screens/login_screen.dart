@@ -1,62 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/users/users.dart';
-import 'package:webshop_flutter/app/screens/login_screen.dart';
+import 'package:webshop_flutter/app/screens/register_screen.dart';
 import 'package:webshop_flutter/app/widgets/named_button.dart';
 import 'package:webshop_flutter/app/widgets/named_textfield.dart';
 import 'package:webshop_flutter/app/utils/globals.dart' as global;
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _repeatPasswordController = TextEditingController();
 
   final _userNameFocus = FocusNode();
   final _passwordFocus = FocusNode();
-  final _repeatPasswordFocus = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
 
-  void _registerUser() async {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
-      if (_passwordController.text == _repeatPasswordController.text) {
-        final api = UsersApi(global.dio);
-        final user = User(
-            username: _userNameController.text,
-            password: _passwordController.text,
-            createdAt: DateTime.now());
+      final api = UsersApi(global.dio);
 
-        try {
-          await api.createUser(user);
+      try {
+        var user = await api.getUserByUsername(_userNameController.text);
 
+        if (user != null && user.isNotEmpty) {
+          if (user[0].password == _passwordController.text) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Successful login!"),
+              ));
+            }
+          } else {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Incorrect password! Try again")));
+            }
+          }
+        } else {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                "User created!",
-              ),
-              showCloseIcon: true,
-            ));
-          }
-
-          _formKey.currentState!.reset();
-          _userNameFocus.requestFocus();
-        } on Exception catch (ex) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(ex.toString()),
+              content: Text("User don't exist! Please try again."),
             ));
           }
         }
-      } else {
+      } on Exception catch (ex) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Password should match repeated password!"),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(ex.toString()),
           ));
         }
       }
@@ -69,10 +64,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else {
       if (_passwordController.text == "") {
         _passwordFocus.requestFocus();
-      } else {
-        if (_repeatPasswordController.text == "") {
-          _repeatPasswordFocus.requestFocus();
-        }
       }
     }
   }
@@ -87,10 +78,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     _userNameController.dispose();
     _passwordController.dispose();
-    _repeatPasswordController.dispose();
     _userNameFocus.dispose();
     _passwordFocus.dispose();
-    _repeatPasswordFocus.dispose();
     super.dispose();
   }
 
@@ -118,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Register",
+                          "Login",
                           style: TextStyle(
                               fontSize: Theme.of(context)
                                   .textTheme
@@ -150,19 +139,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    NamedTextField(
-                      text: "Repeat password:",
-                      controller: _repeatPasswordController,
-                      focusNode: _repeatPasswordFocus,
-                      isPassword: true,
-                      onSubmit: (value) => {_setFocus()},
-                    ),
                     const SizedBox(
                       height: 15,
                     ),
                     NamedButton(
-                      text: 'Register',
-                      onClick: _registerUser,
+                      text: 'Login',
+                      onClick: _login,
                     ),
                     const SizedBox(
                       height: 10,
@@ -170,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Already have an account?"),
+                        const Text("Don't have an account?"),
                         const SizedBox(
                           width: 5,
                         ),
@@ -179,10 +161,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()))
+                                    builder: (context) =>
+                                        const RegisterScreen()))
                           },
                           child: const Text(
-                            "Log in",
+                            "Register",
                             style: TextStyle(
                                 color: Colors.lightBlueAccent,
                                 decoration: TextDecoration.underline),

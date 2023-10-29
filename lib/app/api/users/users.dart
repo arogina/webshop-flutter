@@ -13,7 +13,10 @@ abstract class UsersApi {
   Future<List<User>> getUsers();
 
   @GET("/users/{id}")
-  Future<User> getUser(@Path() String id);
+  Future<User?> getUser(@Path() String id);
+
+  @GET("/users")
+  Future<List<User>?> getUserByUsername(@Query("username") String username);
 
   @POST("/users")
   Future<void> createUser(@Body() User user);
