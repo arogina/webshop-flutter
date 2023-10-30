@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/articles/articles.dart';
+import 'package:flutter_touch_spin/flutter_touch_spin.dart';
+import 'package:intl/intl.dart';
 
 class ArticleCard extends StatefulWidget {
   final Article article;
@@ -34,15 +36,29 @@ class _ArticleCardState extends State<ArticleCard> {
               textAlign: TextAlign.right,
               style: const TextStyle(fontStyle: FontStyle.italic),
             ),
-            OutlinedButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      side: const BorderSide(width: 4, color: Colors.black),
-                      borderRadius: BorderRadius.circular(30.0))),
-                  foregroundColor: MaterialStateProperty.resolveWith(
-                      (states) => Colors.brown)),
-              child: const Text("Add to Cart"),
-              onPressed: () => {},
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TouchSpin(
+                  textStyle: const TextStyle(fontSize: 18),
+                  displayFormat:
+                      NumberFormat.decimalPattern(Intl.defaultLocale),
+                ),
+                OutlinedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0))),
+                      side: MaterialStateProperty.all(
+                          const BorderSide(width: 1, color: Colors.brown)),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.brown)),
+                  child: const Icon(Icons.add_shopping_cart),
+                  onPressed: () => {},
+                )
+              ],
             )
           ]),
         ));
