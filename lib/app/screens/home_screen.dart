@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/articles/articles.dart';
+import 'package:webshop_flutter/app/screens/login_screen.dart';
+import 'package:webshop_flutter/app/screens/register_screen.dart';
 import 'package:webshop_flutter/app/widgets/article_card.dart';
 import 'package:webshop_flutter/app/widgets/named_textfield.dart';
 import 'package:webshop_flutter/app/utils/globals.dart' as global;
@@ -17,20 +19,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future _getArticles() async {
     final api = ArticlesApi(global.dio);
-    if (_searchController.text == "") {
-      articles = await api.getArticles();
-    } else {
-      articles = await api.getArticlesSearch(_searchController.text);
+
+    try {
+      if (_searchController.text == "") {
+        articles = await api.getArticles();
+      } else {
+        articles = await api.getArticlesSearch(_searchController.text);
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    } on Exception catch (ex) {
+      global.logger.e(ex.toString());
     }
-    setState(() {});
   }
 
   @override
   void initState() {
     _getArticles();
-    _searchController.addListener(() {
-      _getArticles();
-    });
     super.initState();
   }
 
@@ -46,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () => {FocusManager.instance.primaryFocus?.unfocus()},
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.brown,
           title: const Row(
             children: [
               Icon(Icons.shopping_basket, size: 30),
@@ -54,12 +61,44 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           actions: [
-            IconButton(
-                onPressed: () => {},
-                icon: const Icon(Icons.account_box_outlined)),
-            IconButton(
-                onPressed: () => {},
-                icon: const Icon(Icons.shopping_cart_outlined))
+            SubmenuButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 20))),
+              menuChildren: [
+                MenuItemButton(
+                  child: const MenuAcceleratorLabel('View cart'),
+                  onPressed: () => {},
+                ),
+              ],
+              child:
+                  const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+            ),
+            SubmenuButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 15))),
+              menuChildren: [
+                MenuItemButton(
+                  child: const MenuAcceleratorLabel('Log in'),
+                  onPressed: () => {
+                    FocusManager.instance.primaryFocus?.unfocus(),
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LoginScreen()))
+                  },
+                ),
+                MenuItemButton(
+                  child: const MenuAcceleratorLabel('Register'),
+                  onPressed: () => {
+                    FocusManager.instance.primaryFocus?.unfocus(),
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const RegisterScreen()))
+                  },
+                )
+              ],
+              child:
+                  const Icon(Icons.account_box_outlined, color: Colors.white),
+            ),
           ],
         ),
         body: Container(
@@ -76,11 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         text: "",
                         controller: _searchController,
                         focusNode: FocusNode(),
+                        isRequired: false,
                         onSubmit: (value) => {},
                       ),
                     ),
                     IconButton(
-                      onPressed: () => {},
+                      onPressed: _getArticles,
                       icon: const Icon(Icons.search_outlined),
                     )
                   ],

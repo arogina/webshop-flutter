@@ -93,13 +93,14 @@ class _LoginScreenState extends State<LoginScreen> {
         onTap: () => {FocusManager.instance.primaryFocus?.unfocus()},
         child: Scaffold(
           appBar: AppBar(
+              backgroundColor: Colors.brown,
               title: const Row(
-            children: [
-              Icon(Icons.shopping_basket, size: 30),
-              SizedBox(width: 10),
-              Text("WebShop"),
-            ],
-          )),
+                children: [
+                  Icon(Icons.shopping_basket, size: 30),
+                  SizedBox(width: 10),
+                  Text("WebShop"),
+                ],
+              )),
           body: Container(
             padding: const EdgeInsets.all(20),
             width: double.infinity,
@@ -168,13 +169,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     builder: (context) =>
                                         const RegisterScreen()))
                           },
-                          child: Text(
+                          child: const Text(
                             "Register",
                             style: TextStyle(
-                                color: Theme.of(context)
-                                    .buttonTheme
-                                    .colorScheme
-                                    ?.primary,
+                                color: Colors.brown,
                                 fontWeight: FontWeight.bold),
                           ),
                         )

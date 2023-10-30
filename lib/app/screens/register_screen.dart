@@ -37,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.brown,
               content: Text(
                 "User created!",
               ),
@@ -56,6 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.brown,
             content: Text("Password should match repeated password!"),
           ));
         }
@@ -100,13 +102,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         onTap: () => {FocusManager.instance.primaryFocus?.unfocus()},
         child: Scaffold(
           appBar: AppBar(
+              backgroundColor: Colors.brown,
               title: const Row(
-            children: [
-              Icon(Icons.shopping_basket, size: 30),
-              SizedBox(width: 10),
-              Text("WebShop"),
-            ],
-          )),
+                children: [
+                  Icon(Icons.shopping_basket, size: 30),
+                  SizedBox(width: 10),
+                  Text("WebShop"),
+                ],
+              )),
           body: Container(
             padding: const EdgeInsets.all(20),
             width: double.infinity,
@@ -181,13 +184,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => const LoginScreen()))
                           },
-                          child: Text(
+                          child: const Text(
                             "Log in",
                             style: TextStyle(
-                                color: Theme.of(context)
-                                    .buttonTheme
-                                    .colorScheme
-                                    ?.primary,
+                                color: Colors.brown,
                                 fontWeight: FontWeight.bold),
                           ),
                         )
