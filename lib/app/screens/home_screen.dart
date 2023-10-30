@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/articles/articles.dart';
+import 'package:webshop_flutter/app/screens/cart_screen.dart';
 import 'package:webshop_flutter/app/screens/login_screen.dart';
 import 'package:webshop_flutter/app/screens/register_screen.dart';
 import 'package:webshop_flutter/app/widgets/article_card.dart';
@@ -68,7 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
               menuChildren: [
                 MenuItemButton(
                   child: const MenuAcceleratorLabel('View cart'),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    FocusManager.instance.primaryFocus?.unfocus(),
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const CartScreen()))
+                  },
                 ),
               ],
               child:
