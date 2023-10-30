@@ -18,6 +18,9 @@ class _NamedButtonState extends State<NamedButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: widget.onClick,
+      style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.resolveWith((states) => Colors.brown)),
       child: Text(widget.text),
     );
   }

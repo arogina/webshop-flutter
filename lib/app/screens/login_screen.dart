@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/users/users.dart';
+import 'package:webshop_flutter/app/screens/home_screen.dart';
 import 'package:webshop_flutter/app/screens/register_screen.dart';
 import 'package:webshop_flutter/app/widgets/named_button.dart';
 import 'package:webshop_flutter/app/widgets/named_textfield.dart';
@@ -34,10 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Successful login!"),
               ));
-            }
 
-            _formKey.currentState!.reset();
-            _setFocus();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+            }
           } else {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -92,13 +93,14 @@ class _LoginScreenState extends State<LoginScreen> {
         onTap: () => {FocusManager.instance.primaryFocus?.unfocus()},
         child: Scaffold(
           appBar: AppBar(
+              backgroundColor: Colors.brown,
               title: const Row(
-            children: [
-              Icon(Icons.shopping_basket, size: 30),
-              SizedBox(width: 10),
-              Text("WebShop"),
-            ],
-          )),
+                children: [
+                  Icon(Icons.shopping_basket, size: 30),
+                  SizedBox(width: 10),
+                  Text("WebShop"),
+                ],
+              )),
           body: Container(
             padding: const EdgeInsets.all(20),
             width: double.infinity,
@@ -110,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Login",
+                          "Log In",
                           style: TextStyle(
                               fontSize: Theme.of(context)
                                   .textTheme
@@ -146,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 15,
                     ),
                     NamedButton(
-                      text: 'Login',
+                      text: 'Log In',
                       onClick: _login,
                     ),
                     const SizedBox(
@@ -170,8 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             "Register",
                             style: TextStyle(
-                                color: Colors.lightBlueAccent,
-                                decoration: TextDecoration.underline),
+                                color: Colors.brown,
+                                fontWeight: FontWeight.bold),
                           ),
                         )
                       ],

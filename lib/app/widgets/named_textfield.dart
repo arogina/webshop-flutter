@@ -5,6 +5,7 @@ class NamedTextField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final bool isPassword;
+  final bool isRequired;
   final ValueSetter? onSubmit;
   const NamedTextField({
     super.key,
@@ -12,6 +13,7 @@ class NamedTextField extends StatefulWidget {
     required this.controller,
     required this.focusNode,
     this.isPassword = false,
+    this.isRequired = true,
     this.onSubmit,
   });
 
@@ -25,25 +27,28 @@ class _NamedTextFieldState extends State<NamedTextField> {
     return Row(
       children: [
         SizedBox(
-          width: 100,
+          width: widget.text == "" ? null : 100,
           child: Text(widget.text),
         ),
         Expanded(
             child: TextFormField(
+          cursorColor: Colors.brown,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: widget.controller,
           focusNode: widget.focusNode,
           decoration: const InputDecoration(
             border: OutlineInputBorder(
                 borderSide: BorderSide(width: 1, color: Colors.white24)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2, color: Colors.brown)),
             isDense: true,
           ),
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
           obscureText: widget.isPassword,
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if ((value == null || value.isEmpty) && widget.isRequired) {
               return "Required field";
             }
             return null;
