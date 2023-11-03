@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 
-class NamedButton extends StatefulWidget {
+class NamedButton extends StatelessWidget {
   final String text;
   final VoidCallback onClick;
   final Color backgroundColor;
-  const NamedButton(
-      {super.key,
-      required this.text,
-      required this.onClick,
-      this.backgroundColor = Colors.brown});
+  final double? fontSize;
+  const NamedButton({
+    super.key,
+    required this.text,
+    required this.onClick,
+    this.backgroundColor = Colors.brown,
+    this.fontSize,
+  });
 
-  @override
-  State<NamedButton> createState() => _NamedButtonState();
-}
-
-class _NamedButtonState extends State<NamedButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: widget.onClick,
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith(
-              (states) => widget.backgroundColor)),
-      child: Text(widget.text),
-    );
+    return SizedBox(
+        height: 50,
+        child: ElevatedButton(
+          onPressed: onClick,
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith(
+                  (states) => backgroundColor)),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: fontSize ?? 20),
+          ),
+        ));
   }
 }

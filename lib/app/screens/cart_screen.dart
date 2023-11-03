@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/models/cart.dart';
+import 'package:webshop_flutter/app/responsive/responsive.dart';
 import 'package:webshop_flutter/app/utils/globals.dart' as global;
 import 'package:webshop_flutter/app/widgets/named_button.dart';
 
@@ -26,70 +27,78 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-            body: Container(
-                padding: const EdgeInsets.all(20),
-                width: double.infinity,
-                child: ListView(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Your cart:",
-                        style: TextStyle(
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontSize,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  DataTable(
-                      columnSpacing: 10,
-                      columns: const [
-                        DataColumn(
-                            label: SizedBox(
-                          width: 100,
-                          child: Text("Article"),
-                        )),
-                        DataColumn(label: Text("Qty.")),
-                        DataColumn(label: Text("Price")),
-                        DataColumn(label: Text("")),
+            body: Responsive(
+              child: Container(
+                  padding: const EdgeInsets.all(20),
+                  width: double.infinity,
+                  child: ListView(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Your cart:",
+                          style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.fontSize,
+                              fontWeight: FontWeight.bold),
+                        )
                       ],
-                      rows: global.currentCart.map((item) {
-                        return DataRow(cells: [
-                          DataCell(SizedBox(
-                              width: 150, child: Text(item.article.name))),
-                          DataCell(Text(item.quantity.toString())),
-                          DataCell(Text(item.article.price)),
-                          DataCell(IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              global.currentCart.remove(item);
-                              setState(() {});
-                            },
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    DataTable(
+                        columnSpacing: 10,
+                        columns: const [
+                          DataColumn(
+                              label: SizedBox(
+                            width: 100,
+                            child: Text("Article"),
                           )),
-                        ]);
-                      }).toList()),
-                  const Divider(thickness: 3),
-                  Text(
-                    "TOTAL: ${Cart.totalSum}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const Divider(thickness: 3),
-                  NamedButton(text: "Checkout", onClick: () => {}),
-                  NamedButton(
-                      text: "Clear",
-                      backgroundColor: Colors.red.shade300,
-                      onClick: () => {
-                            global.currentCart = [],
-                            Cart.totalSum = 0,
-                            setState(() {})
-                          })
-                ]))));
+                          DataColumn(label: Text("Qty.")),
+                          DataColumn(label: Text("Price")),
+                          DataColumn(label: Text("")),
+                        ],
+                        rows: global.currentCart.map((item) {
+                          return DataRow(cells: [
+                            DataCell(SizedBox(
+                                width: 150, child: Text(item.article.name))),
+                            DataCell(Text(item.quantity.toString())),
+                            DataCell(Text(item.article.price)),
+                            DataCell(IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                global.currentCart.remove(item);
+                                setState(() {});
+                              },
+                            )),
+                          ]);
+                        }).toList()),
+                    const Divider(thickness: 3),
+                    Text(
+                      "TOTAL: ${Cart.totalSum}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Divider(thickness: 3),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    NamedButton(text: "Checkout", onClick: () => {}),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    NamedButton(
+                        text: "Clear",
+                        backgroundColor: Colors.red.shade300,
+                        onClick: () => {
+                              global.currentCart = [],
+                              Cart.totalSum = 0,
+                              setState(() {})
+                            })
+                  ])),
+            )));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/articles/articles.dart';
+import 'package:webshop_flutter/app/responsive/responsive.dart';
 import 'package:webshop_flutter/app/screens/cart_screen.dart';
 import 'package:webshop_flutter/app/screens/login_screen.dart';
 import 'package:webshop_flutter/app/screens/register_screen.dart';
@@ -52,96 +53,97 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () => {FocusManager.instance.primaryFocus?.unfocus()},
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.brown,
-          title: const Row(
-            children: [
-              Icon(Icons.shopping_basket, size: 30),
-              SizedBox(width: 10),
-              Text("WebShop"),
+          appBar: AppBar(
+            backgroundColor: Colors.brown,
+            title: const Row(
+              children: [
+                Icon(Icons.shopping_basket, size: 30),
+                SizedBox(width: 10),
+                Text("WebShop"),
+              ],
+            ),
+            actions: [
+              SubmenuButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(horizontal: 20))),
+                menuChildren: [
+                  MenuItemButton(
+                    child: const MenuAcceleratorLabel('View cart'),
+                    onPressed: () => {
+                      FocusManager.instance.primaryFocus?.unfocus(),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const CartScreen()))
+                    },
+                  ),
+                ],
+                child: const Icon(Icons.shopping_cart_outlined,
+                    color: Colors.white),
+              ),
+              SubmenuButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(horizontal: 15))),
+                menuChildren: [
+                  MenuItemButton(
+                    child: const MenuAcceleratorLabel('Log in'),
+                    onPressed: () => {
+                      FocusManager.instance.primaryFocus?.unfocus(),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const LoginScreen()))
+                    },
+                  ),
+                  MenuItemButton(
+                    child: const MenuAcceleratorLabel('Register'),
+                    onPressed: () => {
+                      FocusManager.instance.primaryFocus?.unfocus(),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const RegisterScreen()))
+                    },
+                  )
+                ],
+                child:
+                    const Icon(Icons.account_box_outlined, color: Colors.white),
+              ),
             ],
           ),
-          actions: [
-            SubmenuButton(
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(horizontal: 20))),
-              menuChildren: [
-                MenuItemButton(
-                  child: const MenuAcceleratorLabel('View cart'),
-                  onPressed: () => {
-                    FocusManager.instance.primaryFocus?.unfocus(),
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const CartScreen()))
-                  },
-                ),
-              ],
-              child:
-                  const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-            ),
-            SubmenuButton(
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(horizontal: 15))),
-              menuChildren: [
-                MenuItemButton(
-                  child: const MenuAcceleratorLabel('Log in'),
-                  onPressed: () => {
-                    FocusManager.instance.primaryFocus?.unfocus(),
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginScreen()))
-                  },
-                ),
-                MenuItemButton(
-                  child: const MenuAcceleratorLabel('Register'),
-                  onPressed: () => {
-                    FocusManager.instance.primaryFocus?.unfocus(),
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const RegisterScreen()))
-                  },
-                )
-              ],
-              child:
-                  const Icon(Icons.account_box_outlined, color: Colors.white),
-            ),
-          ],
-        ),
-        body: Container(
-            padding: const EdgeInsets.all(20),
-            width: double.infinity,
-            height: double.infinity,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Row(
+          body: Responsive(
+            child: Container(
+                padding: const EdgeInsets.all(20),
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Expanded(
-                      child: NamedTextField(
-                        text: "",
-                        controller: _searchController,
-                        focusNode: FocusNode(),
-                        isRequired: false,
-                        onSubmit: (value) => {},
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: NamedTextField(
+                            text: "",
+                            controller: _searchController,
+                            focusNode: FocusNode(),
+                            isRequired: false,
+                            onSubmit: (value) => {},
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: _getArticles,
+                          icon: const Icon(Icons.search_outlined),
+                        )
+                      ],
                     ),
-                    IconButton(
-                      onPressed: _getArticles,
-                      icon: const Icon(Icons.search_outlined),
-                    )
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: articles.length,
+                            itemBuilder: (context, index) {
+                              return ArticleCard(article: articles[index]);
+                            }))
                   ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Expanded(
-                    child: ListView.builder(
-                        itemCount: articles.length,
-                        itemBuilder: (context, index) {
-                          return ArticleCard(article: articles[index]);
-                        }))
-              ],
-            )),
-      ),
+                )),
+          )),
     );
   }
 }
