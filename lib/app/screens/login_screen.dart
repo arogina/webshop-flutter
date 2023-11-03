@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/users/users.dart';
+import 'package:webshop_flutter/app/responsive/responsive.dart';
 import 'package:webshop_flutter/app/screens/home_screen.dart';
 import 'package:webshop_flutter/app/screens/register_screen.dart';
 import 'package:webshop_flutter/app/widgets/named_button.dart';
@@ -101,7 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text("WebShop"),
                 ],
               )),
-          body: Container(
+          body: Responsive(
+              child: Container(
             padding: const EdgeInsets.all(20),
             width: double.infinity,
             child: Form(
@@ -180,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     )
                   ],
                 )),
-          ),
+          )),
         ));
   }
 }

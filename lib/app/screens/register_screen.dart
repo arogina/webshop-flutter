@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/users/users.dart';
+import 'package:webshop_flutter/app/responsive/responsive.dart';
 import 'package:webshop_flutter/app/screens/login_screen.dart';
 import 'package:webshop_flutter/app/widgets/named_button.dart';
 import 'package:webshop_flutter/app/widgets/named_textfield.dart';
@@ -110,91 +111,94 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Text("WebShop"),
                 ],
               )),
-          body: Container(
-            padding: const EdgeInsets.all(20),
-            width: double.infinity,
-            child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Register",
-                          style: TextStyle(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.fontSize,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    NamedTextField(
-                      text: "Username:",
-                      controller: _userNameController,
-                      focusNode: _userNameFocus,
-                      onSubmit: (value) => {_setFocus()},
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    NamedTextField(
-                      text: "Password:",
-                      controller: _passwordController,
-                      focusNode: _passwordFocus,
-                      isPassword: true,
-                      onSubmit: (value) => {_setFocus()},
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    NamedTextField(
-                      text: "Repeat password:",
-                      controller: _repeatPasswordController,
-                      focusNode: _repeatPasswordFocus,
-                      isPassword: true,
-                      onSubmit: (value) => {_setFocus()},
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    NamedButton(
-                      text: 'Register',
-                      onClick: _registerUser,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Already have an account?"),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        InkWell(
-                          onTap: () => {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()))
-                          },
-                          child: const Text(
-                            "Log in",
+          body: Responsive(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              width: double.infinity,
+              child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Register",
                             style: TextStyle(
-                                color: Colors.brown,
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall
+                                    ?.fontSize,
                                 fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      NamedTextField(
+                        text: "Username:",
+                        controller: _userNameController,
+                        focusNode: _userNameFocus,
+                        onSubmit: (value) => {_setFocus()},
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      NamedTextField(
+                        text: "Password:",
+                        controller: _passwordController,
+                        focusNode: _passwordFocus,
+                        isPassword: true,
+                        onSubmit: (value) => {_setFocus()},
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      NamedTextField(
+                        text: "Repeat password:",
+                        controller: _repeatPasswordController,
+                        focusNode: _repeatPasswordFocus,
+                        isPassword: true,
+                        onSubmit: (value) => {_setFocus()},
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      NamedButton(
+                        text: 'Register',
+                        onClick: _registerUser,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Already have an account?"),
+                          const SizedBox(
+                            width: 5,
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                )),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()))
+                            },
+                            child: const Text(
+                              "Log in",
+                              style: TextStyle(
+                                  color: Colors.brown,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
+            ),
           ),
         ));
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:webshop_flutter/app/api/articles/articles.dart';
 import 'package:flutter_touch_spin/flutter_touch_spin.dart';
 import 'package:intl/intl.dart';
+import 'package:webshop_flutter/app/models/cart.dart';
+import 'package:webshop_flutter/app/utils/globals.dart' as global;
 
 class ArticleCard extends StatefulWidget {
   final Article article;
@@ -12,6 +14,38 @@ class ArticleCard extends StatefulWidget {
 }
 
 class _ArticleCardState extends State<ArticleCard> {
+  int _quantity = 1;
+  var _counterKey = UniqueKey();
+
+  void _addToCart() {
+    for (var item in global.currentCart) {
+      if (item.article == widget.article) {
+        item.quantity += _quantity;
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Item added to cart!"),
+          ));
+        }
+        setState(() {
+          _quantity = 1;
+          _counterKey = UniqueKey();
+        });
+        return;
+      }
+    }
+
+    global.currentCart.add(Cart(article: widget.article, quantity: _quantity));
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Item added to cart!"),
+      ));
+    }
+    setState(() {
+      _quantity = 1;
+      _counterKey = UniqueKey();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -43,9 +77,12 @@ class _ArticleCardState extends State<ArticleCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TouchSpin(
+                  key: _counterKey,
+                  value: _quantity,
                   textStyle: const TextStyle(fontSize: 18),
                   displayFormat:
                       NumberFormat.decimalPattern(Intl.defaultLocale),
+                  onChanged: (value) => _quantity = value.toInt(),
                 ),
                 OutlinedButton(
                   style: ButtonStyle(
@@ -55,8 +92,8 @@ class _ArticleCardState extends State<ArticleCard> {
                           const BorderSide(width: 1, color: Colors.brown)),
                       foregroundColor: MaterialStateProperty.resolveWith(
                           (states) => Colors.brown)),
+                  onPressed: _addToCart,
                   child: const Icon(Icons.add_shopping_cart),
-                  onPressed: () => {},
                 )
               ],
             )
